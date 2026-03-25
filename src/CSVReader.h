@@ -1,8 +1,13 @@
-//
-// Created by mygam on 3/25/2026.
-//
+#pragma once
+#include <string>
+#include <vector>
+#include "Transaction.h"
 
-#ifndef PROJECT_2_CSVREADER_H
-#define PROJECT_2_CSVREADER_H
-
-#endif //PROJECT_2_CSVREADER_H
+class CSVReader {
+    private:
+        //This converts one csv line into one transaction object
+        static Transaction parseLine(const std::string& line);
+    public:
+        //loads all transctions from csv file
+        static std::vector<Transaction> loadTransactions(const std::string& filename);
+};

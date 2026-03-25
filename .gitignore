@@ -5,6 +5,8 @@
 # CMake build folders
 cmake-build-*/
 
+data/
+
 # OS files
 .DS_Store
 Thumbs.db
