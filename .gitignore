@@ -1,0 +1,10 @@
+# CLion / IntelliJ
+.idea/
+*.iml
+
+# CMake build folders
+cmake-build-*/
+
+# OS files
+.DS_Store
+Thumbs.db
