@@ -11,4 +11,6 @@ add_executable(Project2
         src/AccountStats.cpp
         src/AccountStats.cpp
         src/AccountStats.h
+        src/Analyzer.cpp
+        src/Analyzer.h
 )
