@@ -3,7 +3,7 @@
 #include "CSVReader.h"
 
 int main() {
-    std::vector<Transaction> transactions = CSVReader::loadTransactions("data/fraud.csv");
+    std::vector<Transaction> transactions = CSVReader::loadTransactions("../data/fraud.csv");
 
     std::cout << "Loaded transactions: " << transactions.size() << std::endl;
 

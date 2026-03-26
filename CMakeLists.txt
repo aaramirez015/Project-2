@@ -8,4 +8,7 @@ add_executable(Project2
         src/main.cpp
         src/Transaction.cpp
         src/CSVReader.cpp
+        src/AccountStats.cpp
+        src/AccountStats.cpp
+        src/AccountStats.h
 )
