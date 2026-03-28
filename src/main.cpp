@@ -50,7 +50,11 @@ int main() {
         cout << "2. Show top suspicious accounts" << endl;
         cout << "3. Exit" << endl;
         cout << "Enter choice: ";
-        cin >> choice;
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Invalid input. Try again." << endl;
+            continue; }
 
         if (choice == 1) {
             cout << endl;
