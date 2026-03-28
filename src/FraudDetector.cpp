@@ -91,3 +91,7 @@ unordered_map<string, double> FraudDetector::buildScoresFromUnorderedMap(const u
 
     return scores;
 }
+
+//helper function to help identify accs with high transaction volume
+bool FraudDetector::hasHighTransactionVolume(const AccountStats& stats) {
+    return stats.getTotalTransactions() >= 50;
