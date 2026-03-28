@@ -6,6 +6,7 @@ AccountStats::AccountStats() {
     totalMoneySent = 0.0;
     totalMoneyReceived = 0.0;
     fraudCount = 0;
+    flaggedFraudCount = 0;
 }
 
 //This function updates stats when the account sends money.
@@ -13,8 +14,14 @@ void AccountStats::addSentTransaction(const Transaction& transaction) {
     totalTransactions++;
     totalMoneySent += transaction.amount;
 
-    if (transaction.isFraud == 1 || transaction.isFlaggedFraud == 1) {
+    //this tracks actual fraud for the sender.
+    if (transaction.isFraud == 1) {
         fraudCount++;
+    }
+
+    //this tracks flagged fraud for the sender.
+    if (transaction.isFlaggedFraud == 1) {
+        flaggedFraudCount++;
     }
 }
 
@@ -22,10 +29,6 @@ void AccountStats::addSentTransaction(const Transaction& transaction) {
 void AccountStats::addReceivedTransaction(const Transaction& transaction) {
     totalTransactions++;
     totalMoneyReceived += transaction.amount;
-
-    if (transaction.isFraud == 1 || transaction.isFlaggedFraud == 1) {
-        fraudCount++;
-    }
 }
 
 //This function returns the total number of transactions.
@@ -46,4 +49,9 @@ double AccountStats::getTotalMoneyReceived() const {
 //This function returns the fraud count.
 int AccountStats::getFraudCount() const {
     return fraudCount;
+}
+
+//This function returns the flagged fraud count.
+int AccountStats::getFlaggedFraudCount() const {
+    return flaggedFraudCount;
 }

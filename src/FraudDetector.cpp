@@ -4,35 +4,39 @@
 double FraudDetector::calculateFraudScore(const AccountStats& stats) {
     double score = 0.0;
 
-    //adds points based on total transactions.
-    score += stats.getTotalTransactions() * 0.5;
+    //actual fraud matters the most.
+    score += stats.getFraudCount() * 1200.0;
 
-    //adds points based on money sent.
-    score += stats.getTotalMoneySent() / 10000.0;
+    //flagged fraud also matters, but less.
+    score += stats.getFlaggedFraudCount() * 400.0;
 
-    //adds points based on money received.
-    score += stats.getTotalMoneyReceived() / 20000.0;
+    //more transactions increase suspicion.
+    score += stats.getTotalTransactions() * 8.0;
 
-    //fraud count has biggest impact.
-    score += stats.getFraudCount() * 100.0;
-
-    //extra points for high money sent.
-    if (stats.getTotalMoneySent() >= 100000.0) {
+    //high sent amounts add more suspicion.
+    if (stats.getTotalMoneySent() >= 10000.0) {
         score += 25.0;
     }
-
-    if (stats.getTotalMoneySent() >= 1000000.0) {
+    if (stats.getTotalMoneySent() >= 100000.0) {
         score += 50.0;
     }
+    if (stats.getTotalMoneySent() >= 1000000.0) {
+        score += 100.0;
+    }
+    if (stats.getTotalMoneySent() >= 10000000.0) {
+        score += 200.0;
+    }
 
-    //extra points for high money received.
+    //received money still matters a little.
     if (stats.getTotalMoneyReceived() >= 100000.0) {
-        score += 15.0;
+        score += 10.0;
+    }
+    if (stats.getTotalMoneyReceived() >= 1000000.0) {
+        score += 20.0;
     }
 
-    if (stats.getTotalMoneyReceived() >= 1000000.0) {
-        score += 30.0;
-    }
+    //this helps break ties between similar accounts.
+    score += stats.getTotalMoneySent() / 10000000.0;
 
     return score;
 }
