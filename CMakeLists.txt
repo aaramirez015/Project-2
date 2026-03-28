@@ -13,4 +13,6 @@ add_executable(Project2
         src/AccountStats.h
         src/Analyzer.cpp
         src/Analyzer.h
+        src/FraudDetector.cpp
+        src/FraudDetector.h
 )
