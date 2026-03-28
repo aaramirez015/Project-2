@@ -16,6 +16,11 @@ int main() {
 
     cout << fixed << setprecision(2);
 
+    if (transactions.empty()) {
+        cout << "Error: dataset not found. Please check README for setup." << endl;
+        return 1;
+    }
+
     cout << "Loaded transactions: " << transactions.size() << endl;
 
     //MAP timing
