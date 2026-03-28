@@ -14,6 +14,9 @@ class FraudDetector {
         //this function checks if an account looks sus.
         static bool isSus(const AccountStats& stats);
 
+        //identify accs with unusually high transaction amts 
+        static bool hasHighTransactionVolume(const AccountStats& stats);
+        
         //this function creates fraud score from a map.
         static map<string, double> buildScoresFromMap(const map<string, AccountStats>& accountStats);
 
