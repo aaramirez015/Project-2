@@ -23,19 +23,24 @@ int main() {
 
     cout << "Loaded transactions: " << transactions.size() << endl;
 
+    cout << "Analyzing transactions with map..." << endl;
+
     //MAP timing
     auto startMap = chrono::high_resolution_clock::now();
     map<string, AccountStats> mapResult = Analyzer::analyzeWithMap(transactions);
+    cout << "Analyzing transactions with unordered_map..." << endl;
     auto endMap = chrono::high_resolution_clock::now();
 
     //UNORDERED MAP timing
     auto startUnordered = chrono::high_resolution_clock::now();
     unordered_map<string, AccountStats> unorderedResult = Analyzer::analyzeWithUnorderedMap(transactions);
+    cout << "Building fraud scores..." << endl;
     auto endUnordered = chrono::high_resolution_clock::now();
 
     //build fraud scores from both structures
     map<string, double> mapScores = FraudDetector::buildScoresFromMap(mapResult);
     unordered_map<string, double> unorderedScores = FraudDetector::buildScoresFromUnorderedMap(unorderedResult);
+    cout << "Analysis complete." << endl;
 
     //Print timing results
     auto mapTime = chrono::duration_cast<chrono::milliseconds>(endMap - startMap);
