@@ -61,33 +61,3 @@ bool FraudDetector::isSus(const AccountStats& stats) {
 
     return false;
 }
-
-//this function creates fraud score from a map.
-map<string, double> FraudDetector::buildScoresFromMap(const map<string, AccountStats>& accountStats) {
-    map<string, double> scores;
-
-    //loops through each account in map.
-    for (const auto& pair : accountStats) {
-        string name = pair.first;
-        const AccountStats& stats = pair.second;
-
-        scores[name] = calculateFraudScore(stats);
-    }
-
-    return scores;
-}
-
-//this function creates fraud scores from an unordered_map.
-unordered_map<string, double> FraudDetector::buildScoresFromUnorderedMap(const unordered_map<string, AccountStats>& accountStats) {
-    unordered_map<string, double> scores;
-
-    //loops through each account in unordered_map.
-    for (const auto& pair : accountStats) {
-        string name = pair.first;
-        const AccountStats& stats = pair.second;
-
-        scores[name] = calculateFraudScore(stats);
-    }
-
-    return scores;
-}

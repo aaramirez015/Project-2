@@ -16,14 +16,5 @@ struct Transaction {
     int isFlaggedFraud;
 
     //Def constructor
-    Transaction() {
-        step = 0;
-        amount = 0;
-        oldbalanceOrg = (0.0);
-        newbalanceOrig = (0.0);
-        oldbalanceDest = (0.0);
-        newbalanceDest = (0.0);
-        isFraud = 0;
-        isFlaggedFraud = 0;
-    }
+    Transaction();
 };

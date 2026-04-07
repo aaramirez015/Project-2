@@ -1,31 +1,25 @@
 #include "Analyzer.h"
 
-//This function processes transactions using a map.
-map<string, AccountStats> Analyzer::analyzeWithMap(const vector<Transaction>& transactions) {
-    map<string, AccountStats> accountMap;
-
+//This is analyzing transactions with the ordered map
+void Analyzer::analyzeWithMap(const std::vector<Transaction>& transactions, OrderedMap& accountMap) {
     for (const Transaction& t : transactions) {
-        //Update sender
+
+        //this is updating sender statistics
         accountMap[t.nameOrig].addSentTransaction(t);
 
-        //Update receiver
+        //Updates receiver statistics
         accountMap[t.nameDest].addReceivedTransaction(t);
     }
-
-    return accountMap;
 }
 
-//This function processes transactions using an unordered_map.
-unordered_map<string, AccountStats> Analyzer::analyzeWithUnorderedMap(const vector<Transaction>& transactions) {
-    unordered_map<string, AccountStats> accountMap;
-
+//this is analyzing transactions with the hash map
+void Analyzer::analyzeWithUnorderedMap(const std::vector<Transaction>& transactions, HashMap& accountMap) {
     for (const Transaction& t : transactions) {
-        //Update sender
+
+        //this is updating sender statistics
         accountMap[t.nameOrig].addSentTransaction(t);
 
-        //Update receiver
+        //Updates receiver statistics
         accountMap[t.nameDest].addReceivedTransaction(t);
     }
-
-    return accountMap;
 }

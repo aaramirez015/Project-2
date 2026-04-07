@@ -1,17 +1,14 @@
 #pragma once
 #include <vector>
-#include <map>
-#include <unordered_map>
 #include "Transaction.h"
-#include "AccountStats.h"
-
-using namespace std;
-
+#include "OrderedMap.h"
+#include "HashMap.h"
 class Analyzer {
 public:
-    //This function processes transactions using a map.
-    static map<string, AccountStats> analyzeWithMap(const vector<Transaction>& transactions);
 
-    //This function processes transactions using an unordered_map.
-    static unordered_map<string, AccountStats> analyzeWithUnorderedMap(const vector<Transaction>& transactions);
+    //this is building the ordered map
+    static void analyzeWithMap(const std::vector<Transaction>& transactions, OrderedMap& accountMap);
+
+    //Builds the hash map
+    static void analyzeWithUnorderedMap(const std::vector<Transaction>& transactions, HashMap& accountMap);
 };

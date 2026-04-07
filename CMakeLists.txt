@@ -15,4 +15,8 @@ add_executable(Project2
         src/Analyzer.h
         src/FraudDetector.cpp
         src/FraudDetector.h
+        src/OrderedMap.cpp
+        src/OrderedMap.h
+        src/HashMap.cpp
+        src/HashMap.h
 )
