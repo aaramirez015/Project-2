@@ -4,10 +4,13 @@
 #include "Analyzer.h"
 #include "FraudDetector.h"
 #include "Transaction.h"
+#include "OrderedMap.h"
+#include "HashMap.h"
 #include <chrono>
 #include <queue>
 #include <utility>
 #include <iomanip>
+#include <string>
 
 using namespace std;
 
@@ -23,24 +26,19 @@ int main() {
 
     cout << "Loaded transactions: " << transactions.size() << endl;
 
-    cout << "Analyzing transactions with map..." << endl;
+    //these are the custom data structures to hold account stats
+    OrderedMap mapResult;
+    HashMap unorderedResult;
 
     //MAP timing
     auto startMap = chrono::high_resolution_clock::now();
-    map<string, AccountStats> mapResult = Analyzer::analyzeWithMap(transactions);
-    cout << "Analyzing transactions with unordered_map..." << endl;
+    Analyzer::analyzeWithMap(transactions, mapResult);
     auto endMap = chrono::high_resolution_clock::now();
 
     //UNORDERED MAP timing
     auto startUnordered = chrono::high_resolution_clock::now();
-    unordered_map<string, AccountStats> unorderedResult = Analyzer::analyzeWithUnorderedMap(transactions);
-    cout << "Building fraud scores..." << endl;
+    Analyzer::analyzeWithUnorderedMap(transactions, unorderedResult);
     auto endUnordered = chrono::high_resolution_clock::now();
-
-    //build fraud scores from both structures
-    map<string, double> mapScores = FraudDetector::buildScoresFromMap(mapResult);
-    unordered_map<string, double> unorderedScores = FraudDetector::buildScoresFromUnorderedMap(unorderedResult);
-    cout << "Analysis complete." << endl;
 
     //Print timing results
     auto mapTime = chrono::duration_cast<chrono::milliseconds>(endMap - startMap);
@@ -55,31 +53,25 @@ int main() {
         cout << "2. Show top suspicious accounts" << endl;
         cout << "3. Exit" << endl;
         cout << "Enter choice: ";
-        if (!(cin >> choice)) {
-            cin.clear();
-            cin.ignore(1000, '\n');
-            cout << "Invalid input. Try again." << endl;
-            continue; }
+        cin >> choice;
 
         if (choice == 1) {
             cout << endl;
             cout << "Map processing time: " << mapTime.count() << " ms" << endl;
             cout << "Unordered_map processing time: " << unorderedTime.count() << " ms" << endl;
             cout << "difference in time: " << mapTime.count() - unorderedTime.count() << " ms" << endl;
-            cout << "accounts scored with map: " << mapScores.size() << endl;
-            cout << "accounts scored with unordered_map: " << unorderedScores.size() << endl;
+            cout << "accounts scored with map: " << mapResult.size() << endl;
+            cout << "accounts scored with unordered_map: " << unorderedResult.size() << endl;
         }
         else if (choice == 2) {
             //This heap stores score first and account name second.
             priority_queue<pair<double, string>> maxHeap;
 
-            //This loop pushes all map scores into the heap.
-            for (const auto& pair : mapScores) {
-                string name = pair.first;
-                double score = pair.second;
-
+            //This loop pushes all map scores into the heap using forEach.
+            mapResult.forEach([&](const string& name, const AccountStats& stats) {
+                double score = FraudDetector::calculateFraudScore(stats);
                 maxHeap.push({score, name});
-            }
+            });
 
             cout << endl;
             cout << "Top suspicious accounts:" << endl;
@@ -93,15 +85,21 @@ int main() {
 
                 string name = cur.second;
                 double score = cur.first;
-                AccountStats stats = mapResult[name];
+
+                //this is looking up the stats from the map using find.
+                const AccountStats* statsPtr = mapResult.find(name);
+
+                if (statsPtr == nullptr) {
+                    continue;
+                }
 
                 cout << count + 1 << ". " << name << endl;
                 cout << "   score: " << score << endl;
-                cout << "   total transactions: " << stats.getTotalTransactions() << endl;
-                cout << "   total money sent: " << stats.getTotalMoneySent() << endl;
-                cout << "   total money received: " << stats.getTotalMoneyReceived() << endl;
-                cout << "   fraud count: " << stats.getFraudCount() << endl;
-                cout << "   flagged fraud count: " << stats.getFlaggedFraudCount() << endl;
+                cout << "   total transactions: " << statsPtr->getTotalTransactions() << endl;
+                cout << "   total money sent: " << statsPtr->getTotalMoneySent() << endl;
+                cout << "   total money received: " << statsPtr->getTotalMoneyReceived() << endl;
+                cout << "   fraud count: " << statsPtr->getFraudCount() << endl;
+                cout << "   flagged fraud count: " << statsPtr->getFlaggedFraudCount() << endl;
                 cout << endl;
 
                 count++;
